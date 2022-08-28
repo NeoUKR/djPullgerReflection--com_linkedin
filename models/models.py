@@ -1,24 +1,31 @@
+from datetime import date
 from django.db import models
 from django.db.models import Q
+
 from .models_companies import companies
 from pyPullgerDomain.com.linkedin import port as linkedinPORT
-from pyPullgerFootPrint.com.linkedin import general as linkedinGENERAL
+from pullgerFootPrint.com.linkedin import general as linkedinGENERAL
+
+from pullgerReflection.exceptions import *
+
+LOGGER_NAME = "pullger.Reflection.com_linkedin"
 
 class PeopleManager(models.Manager):
     def getAllPersons(self, **kparams):
         if 'date_loaded' in kparams:
-            return people.objects.filter(date_full_loaded=kparams['date_loaded'])
+            return People.objects.filter(date_full_loaded=kparams['date_loaded'])
         elif 'lte_date_loaded' in kparams:
-            return people.objects.filter(date_full_loaded__lte=kparams['lte_date_loaded'])
+            return People.objects.filter(date_full_loaded__lte=kparams['lte_date_loaded'])
         elif 'ne_date_loaded' in kparams:
-            return people.objects.filter(~Q(date_full_loaded=kparams['ne_date_loaded']))
+            return People.objects.filter(~Q(date_full_loaded=kparams['ne_date_loaded']))
         elif 'eq_date_loaded' in kparams:
-            return people.objects.filter(Q(date_full_loaded=kparams['eq_date_loaded']))
+            return People.objects.filter(Q(date_full_loaded=kparams['eq_date_loaded']))
         else:
-            return people.objects.all()
+            return People.objects.all()
+
     @staticmethod
     def getPeopleByUUID(peopleUUID):
-        res = people.objects.filter(uuid=peopleUUID)[:1]
+        res = People.objects.filter(uuid=peopleUUID)[:1]
         if len(res) == 1:
             return res[0]
         else:
@@ -26,15 +33,13 @@ class PeopleManager(models.Manager):
 
     @staticmethod
     def getPeopleByID(peopleID):
-        res = people.objects.filter(id=peopleID)[:1]
+        res = People.objects.filter(id=peopleID)[:1]
         if len(res) == 1:
             return res[0]
         else:
             return None
 
-
-
-class people(models.Model):
+class People(models.Model):
     uuid = models.CharField(max_length=36, primary_key = True) 
     id = models.IntegerField(blank=False, null=True)
     nick = models.CharField(max_length=150, null=True)
@@ -79,33 +84,39 @@ class people(models.Model):
     def getDomain(self, linkedIN_DOMAIN = None):
         self.DomainObject = linkedIN_DOMAIN.getPerson(id = self.id, nick = self.nick)
 
-class People_Experience(models.Manager):
+    def updateFullLoadDatePeople(self):
+        self.date_full_loaded = date.today()
+        try:
+            self.save()
+        except BaseException as e:
+            raise excReflections_MODEL_Error('Not enough parameters. Need "object="', loggerName=LOGGER_NAME, level=50, exception=e)
+
+people = People;
+
+class People_ExperienceManager(models.Manager):
     @staticmethod
     def delExperiencesIntrnel(inPeople):
-        result = True
-
         rowsExperiences = people_experience.objects.filter(people=inPeople.uuid)
         for rowExperiences in rowsExperiences:
             rowExperiences.delete()
 
-        return result
-
     # Transfered
     @staticmethod
     def delExperiences(**kwards):
-        result = None
-
         if 'uuid' in kwards:
-            result = People_Experience.delExperiencesIntrnel(PeopleManager.getPeopleByUUID(kwards['uuid']))
+            result = People_ExperienceManager._delExperiencesIntrnel(PeopleManager.getPeopleByUUID(kwards['uuid']))
         elif 'id' in kwards:
-            result = People_Experience.delExperiencesIntrnel(PeopleManager.getPeopleByID(kwards['id']))
+            result = People_ExperienceManager._delExperiencesIntrnel(PeopleManager.getPeopleByID(kwards['id']))
         elif 'people' in kwards:
-            result = People_Experience.delExperiencesIntrnel(kwards['people'])
+            result = People_ExperienceManager._delExperiencesIntrnel(kwards['people'])
 
-        return result
+    @staticmethod
+    def _delExperiencesIntrnel(inPeople):
+        rowsExperiences = People_Experience.objects.filter(people=inPeople.uuid)
+        for rowExperiences in rowsExperiences:
+            rowExperiences.delete()
 
-
-class people_experience(models.Model):
+class People_Experience(models.Model):
     uuid = models.CharField(max_length=36, primary_key = True)
     people = models.ForeignKey(people, verbose_name = 'uuid_people', db_column='uuid_people', to_field = 'uuid', on_delete=models.CASCADE)
     companies = models.ForeignKey(companies, verbose_name = 'uuid_companies', db_column='uuid_companies', to_field = 'uuid', on_delete=models.CASCADE)
@@ -113,4 +124,26 @@ class people_experience(models.Model):
     job_timing_type = models.CharField(max_length=50, null=True)
     date_small_loaded = models.DateField(null=True)
 
-    objects = People_Experience()
+    objects = People_ExperienceManager()
+
+    @staticmethod
+    def addPeopleExperience(people, company, **dict):
+        resultAdd = None;
+
+        createPeopleExperience = People_Experience();
+
+        for key, value in dict.items():
+            if hasattr(createPeopleExperience, key):
+                setattr(createPeopleExperience, key, value)
+        try:
+            createPeopleExperience.people = people
+            createPeopleExperience.companies = company
+            createPeopleExperience.save()
+            resultAdd = createPeopleExperience
+        except BaseException as e:
+            raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+
+        return resultAdd;
+
+
+people_experience = People_Experience

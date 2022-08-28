@@ -1,6 +1,6 @@
 import csv
 from djPullgerReflection.com_linkedin import metods
-from pyPullgerFootPrint.com.linkedin import general
+from pullgerFootPrint.com.linkedin import general
 import re
 
 

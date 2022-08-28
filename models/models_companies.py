@@ -4,19 +4,22 @@ from . import models_companies_functions
 from pyPullgerDomain.com.linkedin import port
 import importlib
 from datetime import date
+from pullgerReflection.exceptions import *
 
-class companiesManager(models.Manager):
+LOGGER_NAME = 'pullgerReflection.com.linkedin'
+
+class CompaniesManager(models.Manager):
     testVar = None
 
     def getList(self, **kparams):
         if 'date_loaded' in kparams:
-            return companies.objects.filter(date_full_loaded=kparams['date_loaded'])
+            return Companies.objects.filter(date_full_loaded=kparams['date_loaded'])
         elif 'lte_date_loaded' in kparams:
-            return companies.objects.filter(date_full_loaded__lte=kparams['lte_date_loaded'])
+            return Companies.objects.filter(date_full_loaded__lte=kparams['lte_date_loaded'])
         elif 'eq_date_loaded' in kparams:
-            return companies.objects.filter(Q(date_full_loaded=kparams['eq_date_loaded']))
+            return Companies.objects.filter(Q(date_full_loaded=kparams['eq_date_loaded']))
         else:
-            return companies.objects.all()
+            return Companies.objects.all()
 
     def getSuitable(self):
         return self.filter(~Q(countryISO = 'RU'), ~Q(countryISO = 'UA'), ~Q(countryISO = None), Q(dnb_exist = None))
@@ -26,13 +29,7 @@ class companiesManager(models.Manager):
 
 CHOICES_CARD_TYPE = [('company', 'company') , ('school', 'school')]
 
-# class CardChice():
-#
-#     def __init__(self):
-#         for curChoice in CHOICES_CARD_TYPE:
-#             setattr(self, curChoice[0], curChoice[1])
-
-class companies(models.Model):
+class Companies(models.Model):
     uuid = models.CharField(max_length=36, primary_key = True)
     id = models.IntegerField(blank=False, null=True)
     nick = models.CharField(max_length=1000, null=True)
@@ -81,10 +78,91 @@ class companies(models.Model):
     complies_parameters = models.BooleanField(blank=False, null=True)
 
     domain = None
-    objects = companiesManager()
+    objects = CompaniesManager()
 
     def __next__(self):
         print("Next")
+
+    @staticmethod
+    def getCompanyByID(companyID):
+        res = Companies.objects.filter(id=companyID)
+        if len(res) >= 1:
+            if len(res) > 1:
+                print(f'WARNING: dublicationg companies widh id {companyID}')
+            return res[0]
+        else:
+            return None
+    @staticmethod
+    def getCompanyByUUID(companyUUID):
+        res = Companies.objects.filter(uuid=companyUUID)
+        if len(res) == 1:
+            return res[0]
+        else:
+            return None
+    @staticmethod
+    def getCompanyByNick(companyNICK):
+        res = Companies.objects.filter(nick=companyNICK)
+        if len(res) >= 1:
+            if len(res) > 1:
+                print(f'WARNING: dublicationg companies widh nick {companyNICK}')
+            return res[0]
+        else:
+            return None
+    @staticmethod
+    def isConpanyExist(**kwargs):
+        if 'id' in kwargs and kwargs['id'] != None:
+            if type(kwargs['id']) is int:
+                if len(Companies.objects.filter(id=kwargs['id'])[:1]) == 0:
+                    return False
+                else:
+                    return True;
+            else:
+                raise Exception('incorrect type id')
+        elif 'nick' in kwargs and kwargs['nick'] != None:
+            if type(kwargs['nick']) is str:
+                if len(Companies.objects.filter(nick=kwargs['nick'])[:1]) == 0:
+                    return False
+                else:
+                    return True;
+            else:
+                raise Exception('incorrect nick')
+        else:
+            raise Exception('incorrect call')
+    @staticmethod
+    def addCompany(**dict):
+        if 'id' in dict and dict['id'] != None:
+            company = Companies.getCompanyByID(dict['id'])
+        elif 'nick' in dict and dict['nick'] != None:
+            company = Companies.getCompanyByNick(dict['nick'])
+        else:
+            company = None
+
+        if company == None:
+            if Companies.isConpanyExist(**dict) == False:
+                company = Companies();
+
+                for key, value in dict.items():
+                    if hasattr(company, key):
+                        if (key != 'searcher' and value != None):
+                            setattr(company, key, value)
+                try:
+                    company.save()
+                except BaseException as e:
+                    raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+            else:
+                raise excReflections_MODEL_Dublication(f'Dublicate company: {str(dict)}', loggername=LOGGER_NAME, level=40)
+        else:
+            for key, value in dict.items():
+                if hasattr(company, key):
+                    if getattr(company, key) == None:
+                        setattr(company, key, value)
+
+            try:
+                company.save()
+            except BaseException as e:
+                raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+
+        return company;
 
     def set_DBN_Prifile(self, object = None):
         if object == None:
@@ -98,9 +176,6 @@ class companies(models.Model):
             self.dnb_profile = object.href
             self.save()
 
-
-    # Variation of kwargs
-    # root
     def getDomain(self, domain = None, **kwargs):
         result = None
 
@@ -164,11 +239,6 @@ class companies(models.Model):
         self.incorrect_load = True;
         self.save()
 
-
-
-    # def exec(self, inFunction):
-    #     inFunction()
-
     def reloadFunctions(self):
         try:
             importlib.reload(models_companies_functions)
@@ -177,3 +247,5 @@ class companies(models.Model):
 
     def getRevenueDNB(self):
         pass
+
+companies = Companies

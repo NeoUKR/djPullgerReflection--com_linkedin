@@ -1,11 +1,11 @@
-from djPullgerReflection.com_linkedin import metods
-from djPullgerReflection.com_linkedin.models import people as People
-from djPullgerReflection.com_linkedin.models import companies as Companies_Model
-from djPullgerReflection.com_linkedin.models import people_experience as PeopleExperience
-from djPullgerReflection.com_linkedin.models import companies
+from pullgerReflection.com_linkedin import metods
+from pullgerReflection.com_linkedin.models import people as People
+from pullgerReflection.com_linkedin.models import companies as Companies_Model
+from pullgerReflection.com_linkedin.models import people_experience as PeopleExperience
+from pullgerReflection.com_linkedin.models import companies
 from pyPullgerDomain.com.linkedin import port as linkedinPORT
-from pyPullgerDomain.com.dnb import root as dnbROOT
-from pullger.accountManager.models import Accounts as Accounts_MODEL
+from pullgerDomain.com.dnb import root as dnbROOT
+from pullgerAccountManager.models import Accounts as Accounts_MODEL
 import logging
 import time
 
@@ -178,131 +178,133 @@ def GetSearchResult():
     new = linkedinPORT.Domain();
 
     time.sleep(2)
-    #AuthorizationResult = new.authorization('k.kovalenko@bukovel.com', '137a8f2e37')
-    AuthorizationResult = new.authorization('kkovalenko.sphere@outlook.com', 'bebb90cbf2')
-    if AuthorizationResult == True:
-        #.NET
-        #Belarus
-        #101728296 #Russia
-        #104994045 #Moscow City, Russia
-        #106686604 #StPetersburg City, Russia
-        #Loaded #104359155 #Moscow, Russia
-        #Loaded #103752778 #Yaroslavl’, Russia
-        #Loaded #103574901 #Sverdlovsk, Russia
-        #Loaded #105303715 #Krasnodar, Russia
-        #Loaded #100020981 #Rostov, Russia
-        #Loaded #102917175 #Tatarstan, Russia
-        #Loaded #101777369 #Novosibirsk, Russia
-        #Loaded #103249458 #Samara, Russia
-        #Loaded #104523009 #Chelyabinsk, Russia
-        #Loaded #100827052 #Nizhniy Novgorod, Russia
-        #Loaded #102734387 #Bashkortostan, Russia
-        #Loaded #107992632 #Novosibirsk, Novosibirsk, Russia
-        #Loaded #107062619 #Perm, Russia
-        #Loaded #100367933 #Yekaterinburg, Sverdlovsk, Russia
-        #Loaded #100674497 #Krasnoyarsk, Russia
-        #Loaded #102450862 #Rostov, Rostov, Russia
-        #Loaded #101631519 #Kazan, Tatarstan, Russia
 
-        test = 1
-        # react
-        #101705918 Belarus
-        #101728296 #Russia
-        #104994045 #Moscow City, Russia
-        #106686604 #StPetersburg City, Russia
-        #Loaded #104359155 #Moscow, Russia
-        #103752778 #Yaroslavl’, Russia
-        #103574901 #Sverdlovsk, Russia
-        #105303715 #Krasnodar, Russia
-        #100020981 #Rostov, Russia
-        #102917175 #Tatarstan, Russia
-        #101777369 #Novosibirsk, Russia
-        #103249458 #Samara, Russia
-        #104523009 #Chelyabinsk, Russia
-        #100827052 #Nizhniy Novgorod, Russia
-        #102734387 #Bashkortostan, Russia
-        #107992632 #Novosibirsk, Novosibirsk, Russia
-        #107062619 #Perm, Russia
-        #100367933 #Yekaterinburg, Sverdlovsk, Russia
-        #100674497 #Krasnoyarsk, Russia
-        #102450862 #Rostov, Rostov, Russia
-        #101631519 #Kazan, Tatarstan, Russia
+    try:
+        #AuthorizationResult = new.authorization('k.kovalenko@bukovel.com', '137a8f2e37')
+        new.authorization('kkovalenko.sphere@outlook.com', 'bebb90cbf2')
 
-        test = 1
-        # django
-        #Loaded partial #101705918 #Belarus
-        #101728296 #Russia
-        #104994045 #Moscow City, Russia
-        #Loaded partial #106686604 #StPetersburg City, Russia
-        #Loaded #104359155 #Moscow, Russia
-        #103752778 #Yaroslavl’, Russia
-        #103574901 #Sverdlovsk, Russia
-        #105303715 #Krasnodar, Russia
-        #100020981 #Rostov, Russia
-        #102917175 #Tatarstan, Russia
-        #101777369 #Novosibirsk, Russia
-        #103249458 #Samara, Russia
-        #104523009 #Chelyabinsk, Russia
-        #100827052 #Nizhniy Novgorod, Russia
-        #102734387 #Bashkortostan, Russia
-        #107992632 #Novosibirsk, Novosibirsk, Russia
-        #107062619 #Perm, Russia
-        #100367933 #Yekaterinburg, Sverdlovsk, Russia
-        #100674497 #Krasnoyarsk, Russia
-        #102450862 #Rostov, Rostov, Russia
-        #101631519 #Kazan, Tatarstan, Russia
+        if new._authorizated == True:
+            #.NET
+            #Belarus
+            #101728296 #Russia
+            #104994045 #Moscow City, Russia
+            #106686604 #StPetersburg City, Russia
+            #Loaded #104359155 #Moscow, Russia
+            #Loaded #103752778 #Yaroslavl’, Russia
+            #Loaded #103574901 #Sverdlovsk, Russia
+            #Loaded #105303715 #Krasnodar, Russia
+            #Loaded #100020981 #Rostov, Russia
+            #Loaded #102917175 #Tatarstan, Russia
+            #Loaded #101777369 #Novosibirsk, Russia
+            #Loaded #103249458 #Samara, Russia
+            #Loaded #104523009 #Chelyabinsk, Russia
+            #Loaded #100827052 #Nizhniy Novgorod, Russia
+            #Loaded #102734387 #Bashkortostan, Russia
+            #Loaded #107992632 #Novosibirsk, Novosibirsk, Russia
+            #Loaded #107062619 #Perm, Russia
+            #Loaded #100367933 #Yekaterinburg, Sverdlovsk, Russia
+            #Loaded #100674497 #Krasnoyarsk, Russia
+            #Loaded #102450862 #Rostov, Rostov, Russia
+            #Loaded #101631519 #Kazan, Tatarstan, Russia
 
-        test = 1
-        # java
-        #101728296 #Russia
-        #104994045 #Moscow City, Russia
-        #106686604 #StPetersburg City, Russia
-        #Loaded partial #104359155 #Moscow, Russia
-        #103752778 #Yaroslavl’, Russia
-        #103574901 #Sverdlovsk, Russia
-        #105303715 #Krasnodar, Russia
-        #100020981 #Rostov, Russia
-        #102917175 #Tatarstan, Russia
-        #101777369 #Novosibirsk, Russia
-        #103249458 #Samara, Russia
-        #104523009 #Chelyabinsk, Russia
-        #100827052 #Nizhniy Novgorod, Russia
-        #102734387 #Bashkortostan, Russia
-        #107992632 #Novosibirsk, Novosibirsk, Russia
-        #107062619 #Perm, Russia
-        #100367933 #Yekaterinburg, Sverdlovsk, Russia
-        #100674497 #Krasnoyarsk, Russia
-        #102450862 #Rostov, Rostov, Russia
-        #101631519 #Kazan, Tatarstan, Russia
+            test = 1
+            # react
+            #101705918 Belarus
+            #101728296 #Russia
+            #104994045 #Moscow City, Russia
+            #106686604 #StPetersburg City, Russia
+            #Loaded #104359155 #Moscow, Russia
+            #103752778 #Yaroslavl’, Russia
+            #103574901 #Sverdlovsk, Russia
+            #105303715 #Krasnodar, Russia
+            #100020981 #Rostov, Russia
+            #102917175 #Tatarstan, Russia
+            #101777369 #Novosibirsk, Russia
+            #103249458 #Samara, Russia
+            #104523009 #Chelyabinsk, Russia
+            #100827052 #Nizhniy Novgorod, Russia
+            #102734387 #Bashkortostan, Russia
+            #107992632 #Novosibirsk, Novosibirsk, Russia
+            #107062619 #Perm, Russia
+            #100367933 #Yekaterinburg, Sverdlovsk, Russia
+            #100674497 #Krasnoyarsk, Russia
+            #102450862 #Rostov, Rostov, Russia
+            #101631519 #Kazan, Tatarstan, Russia
 
-        test = 1
-        # C#
-        #101728296 #Russia
-        #104994045 #Moscow City, Russia
-        #106686604 #StPetersburg City, Russia
-        #104359155 #Moscow, Russia
-        #103752778 #Yaroslavl’, Russia
-        #103574901 #Sverdlovsk, Russia
-        #105303715 #Krasnodar, Russia
-        #100020981 #Rostov, Russia
-        #102917175 #Tatarstan, Russia
-        #101777369 #Novosibirsk, Russia
-        #103249458 #Samara, Russia
-        #104523009 #Chelyabinsk, Russia
-        #100827052 #Nizhniy Novgorod, Russia
-        #102734387 #Bashkortostan, Russia
-        #107992632 #Novosibirsk, Novosibirsk, Russia
-        #107062619 #Perm, Russia
-        #100367933 #Yekaterinburg, Sverdlovsk, Russia
-        #100674497 #Krasnoyarsk, Russia
-        #102450862 #Rostov, Rostov, Russia
-        #101631519 #Kazan, Tatarstan, Russia
+            test = 1
+            # django
+            #Loaded partial #101705918 #Belarus
+            #101728296 #Russia
+            #104994045 #Moscow City, Russia
+            #Loaded partial #106686604 #StPetersburg City, Russia
+            #Loaded #104359155 #Moscow, Russia
+            #103752778 #Yaroslavl’, Russia
+            #103574901 #Sverdlovsk, Russia
+            #105303715 #Krasnodar, Russia
+            #100020981 #Rostov, Russia
+            #102917175 #Tatarstan, Russia
+            #101777369 #Novosibirsk, Russia
+            #103249458 #Samara, Russia
+            #104523009 #Chelyabinsk, Russia
+            #100827052 #Nizhniy Novgorod, Russia
+            #102734387 #Bashkortostan, Russia
+            #107992632 #Novosibirsk, Novosibirsk, Russia
+            #107062619 #Perm, Russia
+            #100367933 #Yekaterinburg, Sverdlovsk, Russia
+            #100674497 #Krasnoyarsk, Russia
+            #102450862 #Rostov, Rostov, Russia
+            #101631519 #Kazan, Tatarstan, Russia
 
-        locations = []
-        print(f'Loading locations: {locations[0]}')
-        resGetData = new.search('people', locations, "C#")
+            test = 1
+            # java
+            #101728296 #Russia
+            #104994045 #Moscow City, Russia
+            #106686604 #StPetersburg City, Russia
+            #Loaded partial #104359155 #Moscow, Russia
+            #103752778 #Yaroslavl’, Russia
+            #103574901 #Sverdlovsk, Russia
+            #105303715 #Krasnodar, Russia
+            #100020981 #Rostov, Russia
+            #102917175 #Tatarstan, Russia
+            #101777369 #Novosibirsk, Russia
+            #103249458 #Samara, Russia
+            #104523009 #Chelyabinsk, Russia
+            #100827052 #Nizhniy Novgorod, Russia
+            #102734387 #Bashkortostan, Russia
+            #107992632 #Novosibirsk, Novosibirsk, Russia
+            #107062619 #Perm, Russia
+            #100367933 #Yekaterinburg, Sverdlovsk, Russia
+            #100674497 #Krasnoyarsk, Russia
+            #102450862 #Rostov, Rostov, Russia
+            #101631519 #Kazan, Tatarstan, Russia
 
-        if resGetData == True:
+            test = 1
+            # C#
+            #101728296 #Russia
+            #104994045 #Moscow City, Russia
+            #106686604 #StPetersburg City, Russia
+            #104359155 #Moscow, Russia
+            #103752778 #Yaroslavl’, Russia
+            #103574901 #Sverdlovsk, Russia
+            #105303715 #Krasnodar, Russia
+            #100020981 #Rostov, Russia
+            #102917175 #Tatarstan, Russia
+            #101777369 #Novosibirsk, Russia
+            #103249458 #Samara, Russia
+            #104523009 #Chelyabinsk, Russia
+            #100827052 #Nizhniy Novgorod, Russia
+            #102734387 #Bashkortostan, Russia
+            #107992632 #Novosibirsk, Novosibirsk, Russia
+            #107062619 #Perm, Russia
+            #100367933 #Yekaterinburg, Sverdlovsk, Russia
+            #100674497 #Krasnoyarsk, Russia
+            #102450862 #Rostov, Rostov, Russia
+            #101631519 #Kazan, Tatarstan, Russia
+
+            locations = [100674497]
+            print(f'Loading locations: {locations[0]}')
+            new.search('people', locations, "C#")
+
             countResults = new.getCountOfResults()
 
             if countResults < 12000:
@@ -321,8 +323,9 @@ def GetSearchResult():
                     # EndOfSearch = True;
             else:
                 print(f'Persons to many!! {countResults}')
-
-    new.close();
+    except Exception as e:
+        print(f'Error {str(e)}')
+        new.close();
 
 '''
 shell -c "print('start');from djPullgerReflection.com_linkedin import tests;tests.GetSearchResult()"
