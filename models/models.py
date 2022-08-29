@@ -3,10 +3,10 @@ from django.db import models
 from django.db.models import Q
 
 from .models_companies import companies
-from pyPullgerDomain.com.linkedin import port as linkedinPORT
+from pullgerDomain.com.linkedin import port as linkedinPORT
 from pullgerFootPrint.com.linkedin import general as linkedinGENERAL
 
-from pullgerReflection.exceptions import *
+from pullgerExceptions import reflection as exceptions
 
 LOGGER_NAME = "pullger.Reflection.com_linkedin"
 
@@ -89,7 +89,11 @@ class People(models.Model):
         try:
             self.save()
         except BaseException as e:
-            raise excReflections_MODEL_Error('Not enough parameters. Need "object="', loggerName=LOGGER_NAME, level=50, exception=e)
+            raise exceptions.model.Error(
+                'Not enough parameters. Need "object="',
+                level=50,
+                exception=e
+            )
 
 people = People;
 
@@ -141,7 +145,10 @@ class People_Experience(models.Model):
             createPeopleExperience.save()
             resultAdd = createPeopleExperience
         except BaseException as e:
-            raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+            raise exceptions.model.Error(
+                f"Incorrect creating company: {str(dict)}",
+                exception=e
+            )
 
         return resultAdd;
 

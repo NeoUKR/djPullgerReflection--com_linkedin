@@ -1,10 +1,10 @@
 from django.db import models
 from django.db.models import Q
 from . import models_companies_functions
-from pyPullgerDomain.com.linkedin import port
+from pullgerDomain.com.linkedin import port
 import importlib
 from datetime import date
-from pullgerReflection.exceptions import *
+from pullgerExceptions import reflection as exceptions
 
 LOGGER_NAME = 'pullgerReflection.com.linkedin'
 
@@ -148,19 +148,29 @@ class Companies(models.Model):
                 try:
                     company.save()
                 except BaseException as e:
-                    raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+                    raise exceptions.model.Error(
+                        f"Incorrect creating company: {str(dict)}",
+                        level=40,
+                        exception=e
+                    )
             else:
-                raise excReflections_MODEL_Dublication(f'Dublicate company: {str(dict)}', loggername=LOGGER_NAME, level=40)
+                raise exceptions.model.Error(
+                    f'Dublicate company: {str(dict)}',
+                    level=40
+                )
         else:
             for key, value in dict.items():
                 if hasattr(company, key):
                     if getattr(company, key) == None:
                         setattr(company, key, value)
-
             try:
                 company.save()
             except BaseException as e:
-                raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+                raise exceptions.model.Error(
+                    f"Incorrect creating company: {str(dict)}",
+                    level=40,
+                    exception=e
+                )
 
         return company;
 
