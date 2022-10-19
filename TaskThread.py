@@ -13,17 +13,17 @@ class Operations(object):
         class INITIAL_LOAD(object):
             name = 'PEOPLE_INITIAL_LOAD'
 
-            def getMultisessionParameters(self):
-                from pullgerAccountManager import structures
+            def get_multi_session_parameters(self):
+                from pullgerAccountManager import authorizationsServers
                 from pullgerReflection.com_linkedin.ThreadOperations import people as ThreadOperations_people
 
-                paramlist = {
+                param_list = {
                     'uuid_link': None,
-                    'authorization': structures.authorizationsServers.linkedin(),
+                    'authorization': authorizationsServers.linkedin.instances.general,
                     'loader': ThreadOperations_people.initialLoad(),
                     'taskFinalizer': None,
                 }
 
-                return paramlist
+                return param_list
 
 
