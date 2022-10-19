@@ -3,12 +3,10 @@ from django.db import models
 from django.db.models import Q
 
 from .models_companies import companies
-from pyPullgerDomain.com.linkedin import port as linkedinPORT
+from pullgerDomain.com.linkedin import port as linkedinPORT
 from pullgerFootPrint.com.linkedin import general as linkedinGENERAL
+from pullgerInternalControl import pIC_pR
 
-from pullgerReflection.exceptions import *
-
-LOGGER_NAME = "pullger.Reflection.com_linkedin"
 
 class PeopleManager(models.Manager):
     def getAllPersons(self, **kparams):
@@ -40,7 +38,7 @@ class PeopleManager(models.Manager):
             return None
 
 class People(models.Model):
-    uuid = models.CharField(max_length=36, primary_key = True) 
+    uuid = models.CharField(max_length=36, primary_key=True)
     id = models.IntegerField(blank=False, null=True)
     nick = models.CharField(max_length=150, null=True)
 
@@ -67,7 +65,7 @@ class People(models.Model):
         result = None
         if self.url != None:
             ## ==================================================
-            urlClear = linkedinGENERAL.getCleanedURL(self.url)
+            urlClear = linkedinGENERAL.get_cleaned_url(self.url)
             if self.url != urlClear:
                 self.url = urlClear
                 result = True
@@ -89,9 +87,15 @@ class People(models.Model):
         try:
             self.save()
         except BaseException as e:
-            raise excReflections_MODEL_Error('Not enough parameters. Need "object="', loggerName=LOGGER_NAME, level=50, exception=e)
+            raise pIC_pR.Model.Error(
+                'Not enough parameters. Need "object="',
+                level=50,
+                exception=e
+            )
 
-people = People;
+
+people = People
+
 
 class People_ExperienceManager(models.Manager):
     @staticmethod
@@ -141,7 +145,10 @@ class People_Experience(models.Model):
             createPeopleExperience.save()
             resultAdd = createPeopleExperience
         except BaseException as e:
-            raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+            raise pIC_pR.Model.Error(
+                f"Incorrect creating company: {str(dict)}",
+                exception=e
+            )
 
         return resultAdd;
 

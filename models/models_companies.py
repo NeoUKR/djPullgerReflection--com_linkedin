@@ -1,25 +1,24 @@
 from django.db import models
 from django.db.models import Q
 from . import models_companies_functions
-from pyPullgerDomain.com.linkedin import port
+from pullgerDomain.com.linkedin import port
 import importlib
 from datetime import date
-from pullgerReflection.exceptions import *
+from pullgerInternalControl import pIC_pR
 
-LOGGER_NAME = 'pullgerReflection.com.linkedin'
 
 class CompaniesManager(models.Manager):
     testVar = None
 
-    def getList(self, **kparams):
-        if 'date_loaded' in kparams:
-            return Companies.objects.filter(date_full_loaded=kparams['date_loaded'])
-        elif 'lte_date_loaded' in kparams:
-            return Companies.objects.filter(date_full_loaded__lte=kparams['lte_date_loaded'])
-        elif 'eq_date_loaded' in kparams:
-            return Companies.objects.filter(Q(date_full_loaded=kparams['eq_date_loaded']))
+    def get_list(self, date_loaded=None, lte_date_loaded=None, eq_date_loaded=None):
+        if date_loaded is not None:
+            return self.filter(date_full_loaded=date_loaded)
+        elif lte_date_loaded is not None:
+            return self.filter(date_full_loaded__lte=lte_date_loaded)
+        elif eq_date_loaded is not None:
+            return self.filter(Q(date_full_loaded=eq_date_loaded))
         else:
-            return Companies.objects.all()
+            return self.all()
 
     def getSuitable(self):
         return self.filter(~Q(countryISO = 'RU'), ~Q(countryISO = 'UA'), ~Q(countryISO = None), Q(dnb_exist = None))
@@ -148,19 +147,29 @@ class Companies(models.Model):
                 try:
                     company.save()
                 except BaseException as e:
-                    raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+                    raise pIC_pR.Model.Error(
+                        f"Incorrect creating company: {str(dict)}",
+                        level=40,
+                        exception=e
+                    )
             else:
-                raise excReflections_MODEL_Dublication(f'Dublicate company: {str(dict)}', loggername=LOGGER_NAME, level=40)
+                raise pIC_pR.Model.Error(
+                    f'Duplicate company: {str(dict)}',
+                    level=40
+                )
         else:
             for key, value in dict.items():
                 if hasattr(company, key):
                     if getattr(company, key) == None:
                         setattr(company, key, value)
-
             try:
                 company.save()
             except BaseException as e:
-                raise excReflections_MODEL_Error(f"Incorrect creating company: {str(dict)}", loggername=LOGGER_NAME, exception=e)
+                raise pIC_pR.Model.Error(
+                    f"Incorrect creating company: {str(dict)}",
+                    level=40,
+                    exception=e
+                )
 
         return company;
 

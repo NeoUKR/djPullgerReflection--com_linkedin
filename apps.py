@@ -1,7 +1,6 @@
 from django.apps import AppConfig
-from pullgerReflection.exceptions import *
+from pullgerInternalControl import pIC_pR
 
-LOGGER_NAME = "pullger.Reflection.com_linkedin.apps"
 
 class com_linkedinConfig(AppConfig):
     name = 'pullgerReflection.com_linkedin'
@@ -13,4 +12,8 @@ class com_linkedinConfig(AppConfig):
         try:
             import pullgerReflection.com_linkedin__TT.signals
         except BaseException as e:
-            raise excReflections_TT_Integration("Exception on connection library 'pullgerReflection.com_linkedin__TT.signals'", loggerName=LOGGER_NAME, level=20, parent=e)
+            raise pIC_pR.TT.Integration(
+                "Error on importing signals'",
+                level=20,
+                exception=e
+            )

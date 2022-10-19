@@ -20,7 +20,7 @@ def loadCSV():
                 name = splitedCSV[0].strip()
 
                 url = splitedCSV[2]
-                url = general.getCleanedURL(url)
+                url = general.get_cleaned_url(url)
 
                 if url != None:
                     id = general.getIdFromURL(url)

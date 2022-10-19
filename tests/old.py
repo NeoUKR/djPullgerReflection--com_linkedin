@@ -370,7 +370,7 @@ def loadAllPerson(InConnection = None, inLimit = None):
                     raise errorDiscription
 
             # CurCardPeople.DomainObject.squirrel.get(CurCardPeople.url + '/details/experience/')
-            experieneceList = CurCardPeople.DomainObject.getListOfExperience()
+            experieneceList = CurCardPeople.DomainObject.get_list_of_experience()
 
             PeopleExperience.objects.delExperiences(uuid=CurCardPeople.uuid)
             errorsInLoop = False
@@ -424,7 +424,7 @@ def loadCompanies(inConnection = None, inLimit = None):
     # connectionStatus = rootDomain.authorization('kkovalenko.sphere@outlook.com', 'bebb90cbf2')
 
     if connectionStatus:
-        listCompanies = companies.objects.getList(eq_date_loaded = None)
+        listCompanies = companies.objects.get_list(eq_date_loaded = None)
         logging.info(f'Loading companies: find unloaded companies: {len(listCompanies)}')
         for curCompny in listCompanies:
             try:

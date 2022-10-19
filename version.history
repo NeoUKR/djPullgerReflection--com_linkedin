@@ -1,0 +1,13 @@
+Version history [pullgerReflection.com_linkedin]
+
+{0.1.0.0} [pullgerReflection.com_linkedin]
+ - complex update
+
+
+{0.0.5.1} [pullgerReflection.com_linkedin]
+ - reconnecting pyReflection to new module location
+ - relocation exception to new location
+
+
+{0.0.0.0} [pullgerReflection.com_linkedin]
+ - initialization
