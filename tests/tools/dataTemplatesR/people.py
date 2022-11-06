@@ -1,4 +1,4 @@
-def person_DATA():
+def person_data():
     return {
         # 'id': None,
         'nick': 'kkonstantin',

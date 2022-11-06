@@ -12,7 +12,7 @@ class initialLoad(object):
         self._object = inObject
 
     def executeOnDomain(self, inDomain):
-        self._object.getDomain(inDomain)
+        self._object.get_domain(inDomain)
         try:
             experience_list = self._object.DomainObject.get_list_of_experience()
             # raise BaseException("test")
@@ -23,7 +23,7 @@ class initialLoad(object):
                 exception=e
             )
 
-        Reflection__com_linkedin_MODELS.People_Experience.objects.delExperiences(uuid=self._object.uuid)
+        Reflection__com_linkedin_MODELS.People_Experience.objects.del_experiences(uuid=self._object.uuid)
 
         errorsInLoop = False
 
@@ -36,16 +36,16 @@ class initialLoad(object):
                     "searcher": "NEO",
                     "url": curExperience['companyURL']
                 }
-                newCompany = Reflection__com_linkedin_MODELS.Companies.addCompany(**newCompanyDict)
+                newCompany = Reflection__com_linkedin_MODELS.Companies.add_company(**newCompanyDict)
 
                 newPeopleExperienceDict = {
                     "job_discription": curExperience['job_discription'],
                     "job_timing_type": curExperience['job_timing_type']
                 }
 
-                resAddExperience = Reflection__com_linkedin_MODELS.People_Experience.addPeopleExperience(self._object, newCompany, **newPeopleExperienceDict)
+                resAddExperience = Reflection__com_linkedin_MODELS.People_Experience.add_people_experience(self._object, newCompany, **newPeopleExperienceDict)
                 if resAddExperience is None:
                     errorsInLoop = True
 
         if errorsInLoop is False:
-            self._object.updateFullLoadDatePeople()
+            self._object.update_full_load_data_people()

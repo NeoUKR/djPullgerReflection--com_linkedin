@@ -1,17 +1,17 @@
-from pullgerReflection.com_linkedin import models as com_linkedin_MODEL
+from pullgerReflection.com_linkedin import models as com_linkedin_model
 from pullgerInternalControl import pIC_pR
 
 
-def addPeople(**kwargs):
-    modelObject = com_linkedin_MODEL.people
+def add_people(**kwargs):
+    model_object = com_linkedin_model.people
 
-    newObjectInstance = modelObject()
+    newObjectInstance = model_object()
 
-    for curField in modelObject._meta.get_fields():
+    for curField in model_object._meta.get_fields():
         if hasattr(curField, 'attname'):
             fieldName = getattr(curField, 'attname')
             value = kwargs.get(fieldName)
-            if value != None:
+            if value is not None:
                 setattr(newObjectInstance, fieldName, value)
 
     try:
@@ -25,9 +25,9 @@ def addPeople(**kwargs):
         )
 
 
-def getPeople(**kwargs):
+def get_people(**kwargs):
     if 'uuid' in kwargs:
-        result =  com_linkedin_MODEL.people.objects.filter(uuid=kwargs['uuid'])
+        result = com_linkedin_model.people.objects.filter(uuid=kwargs['uuid'])
         if len(result) == 0:
             return None
         else:

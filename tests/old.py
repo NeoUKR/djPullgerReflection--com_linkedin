@@ -153,7 +153,7 @@ shell -c "print('start');from djPullgerReflection.com_linkedin import tests;test
 '''
 
 def urlPersonNormalization():
-    allPeoples = People.objects.getAllPersons();
+    allPeoples = People.objects.get_all_persons();
 
     for curPeople in allPeoples:
 
@@ -161,7 +161,7 @@ def urlPersonNormalization():
         curPeople.save()
 
 def dataPersonNormalization():
-    allPeoples = People.objects.getAllPersons();
+    allPeoples = People.objects.get_all_persons();
 
     for curPeople in allPeoples:
         if curPeople.nick == 'ildar0':
@@ -305,14 +305,14 @@ def GetSearchResult():
             print(f'Loading locations: {locations[0]}')
             new.search('people', locations, "C#")
 
-            countResults = new.getCountOfResults()
+            countResults = new.get_count_of_results()
 
             if countResults < 12000:
                 EndOfSearch = False
 
                 while EndOfSearch == False:
                     time.sleep(4)
-                    listOfPersons = new.getListOfPeoples()
+                    listOfPersons = new.get_list_of_peoples()
                     print('List get: ' + str(len(listOfPersons)))
 
                     for elOfList in listOfPersons:
@@ -346,7 +346,7 @@ def loadAllPerson(InConnection = None, inLimit = None):
         resultConnection = domain.connected
 
     if resultConnection == True:
-        CardsArray = People.objects.getAllPersons(eq_date_loaded=None)
+        CardsArray = People.objects.get_all_persons(eq_date_loaded=None)
         logging.info(f'Processing people: not processed people: {len(CardsArray)}')
         limit = inLimit if inLimit != None else 20
         count = 0
@@ -359,7 +359,7 @@ def loadAllPerson(InConnection = None, inLimit = None):
             # new.getPerson(url = CurCardPeople.url)
             # new.getPerson(object=CurCardPeople)
             try:
-                CurCardPeople.getDomain(domain)
+                CurCardPeople.get_domain(domain)
             except Exception as e:
                 if str(e) == 'incorrect page':
                     logging.info(f'Incorrect page for people uuid: [{CurCardPeople.uuid}] url: [{CurCardPeople.url}]')
@@ -372,7 +372,7 @@ def loadAllPerson(InConnection = None, inLimit = None):
             # CurCardPeople.DomainObject.squirrel.get(CurCardPeople.url + '/details/experience/')
             experieneceList = CurCardPeople.DomainObject.get_list_of_experience()
 
-            PeopleExperience.objects.delExperiences(uuid=CurCardPeople.uuid)
+            PeopleExperience.objects.del_experiences(uuid=CurCardPeople.uuid)
             errorsInLoop = False
 
             for curExperienece in experieneceList:
@@ -429,7 +429,7 @@ def loadCompanies(inConnection = None, inLimit = None):
         for curCompny in listCompanies:
             try:
                 time.sleep(2)
-                if curCompny.getDomain(rootDomain):
+                if curCompny.get_domain(rootDomain):
                     try:
                         curCompny.updateDATA()
                     except Exception as e:
@@ -501,7 +501,7 @@ def checkEqualHREF(firstHREF, secondHREF):
 def GetCorrectCompanyRevenue():
     dnbDOMAIN = dnbROOT.Root()
 
-    listCompany = Companies_Model.objects.getSuitable()
+    listCompany = Companies_Model.objects.get_suitable()
     print(f'Find {len(listCompany)} to search Revenue')
     for curCompany in listCompany:
         try:

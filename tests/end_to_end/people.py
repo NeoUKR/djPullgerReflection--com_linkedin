@@ -1,11 +1,7 @@
-# from pullgerReflection.com_linkedin.tests import dataTemplate as dataTemplate_com_linkedin
-from pullgerReflection.com_linkedin.tests import unit as unit_com_linkedin
-
-from pullgerMultiSessionManager import api as pullgerMM__API
 from rest_framework.test import APITestCase
 
 
-class Test_001_FullCircle(APITestCase):
+class Test002People(APITestCase):
     def setUP(self):
         # TODO "Check the aviliability of all required modules: (UnitOperationsREST,)"
         # TODO "Clear sessions"
@@ -41,15 +37,15 @@ class Test_001_FullCircle(APITestCase):
     #     # pass
 
     def test_000_people_load_head_browser(self):
-        from pullgerReflection.com_linkedin__REST.tests import UnitOperations as UnitOperationsREST
+        from pullgerReflection.com_linkedin__REST.tests.tool import unitOperationsRRest as UnitOperationsREST
 
         UnitOperationsREST.setUpUnit(self)
         UnitOperationsREST.createPeople(self)
 
-        from pullgerAccountManager__REST.tests import UnitOperations as UnitOperationsAMRest
-        UnitOperationsAMRest.addAccountForLinkedIN(self)
+        from pullgerAccountManager__REST.tests.tools import unitOperationsAMRest as UnitOperationsAMRest
+        UnitOperationsAMRest.add_account_for_linkedin(self)
 
-        from pullgerMultiSessionManager__REST.tests import UnitOperations as UnitOperationsMM
+        from pullgerMultiSessionManager__REST.tests.tools import unitOperationsMSMRest as UnitOperationsMM
         UnitOperationsMM.add_session_linkedin_no_head(self)
         # UnitOperationsMM.add_session_linkedin_standard(self)
         UnitOperationsMM.make_all_session_authorization(self)

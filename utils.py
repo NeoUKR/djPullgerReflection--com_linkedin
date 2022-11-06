@@ -54,7 +54,7 @@ def loadCSV():
 
                     if id != None or nick != None:
                         try:
-                            newCompany = metods.addCompany(**companyDict)
+                            newCompany = metods.add_company(**companyDict)
                         except Exception as e:
                             print(f'Error in line {rowCount} : {str(e)}')
                     else:
