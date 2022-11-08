@@ -1,5 +1,9 @@
 Version history [pullgerReflection.com_linkedin]
 
+{0.2.1.1} [pullgerReflection.com_linkedin]
+ - fix error on creating 'Search request'
+
+
 {0.2.1.0} [pullgerReflection.com_linkedin]
  - refactoring: moved DataTemplate and UnitOperations to Tools
 

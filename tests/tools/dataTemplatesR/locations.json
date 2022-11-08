@@ -1,5 +1,4 @@
-def location_data():
-    return [
+[
         {
             "id_location": 107062619,
             "description": "Perm, Russia"
@@ -11,6 +10,5 @@ def location_data():
         {
             "id_location": 101631519,
             "description": "Kazan, Tatarstan, Russia"
-        },
-    ]
-
+        }
+]

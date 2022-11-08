@@ -77,15 +77,34 @@ class Locations(models.Model):
     # ---------------------------------------------------------------------
 
     @staticmethod
-    def add_locations(id_location: int, description: str):
-        location_element = Locations.objects.get_location_by_id(id_location)
+    def add_locations(id_location: int = None, description: str = None, **kwargs):
+        if id_location is not None:
+            location_element = Locations.objects.get_location_by_id(id_location)
 
-        if location_element is None:
-            new_location = Locations()
-            new_location.id_location = id_location
-            new_location.description = description
-            new_location.save()
+            if location_element is None:
+                new_location = Locations()
+                new_location.id_location = id_location
+                if description is not None:
+                    new_location.description = description
+                else:
+                    new_location.description = ""
+                new_location.save()
+            else:
+                new_location = location_element
+
+            return new_location
         else:
-            new_location = location_element
+            ModelExceptions.IncorrectData(
+                msg="No 'id_location' in request",
+                level=30
+            )
 
-        return new_location
+
+    def to_json(self):
+        return(
+            str({
+                "uuid": str(self.uuid),
+                "id_location": self.id_location,
+                "description": self.description
+            })
+        )
